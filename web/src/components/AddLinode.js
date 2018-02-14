@@ -78,7 +78,7 @@ class AddLinode extends Component {
           <FormGroup controlId="organizationName">
             <ControlLabel>Select Organizations</ControlLabel>
             <FormControl componentClass="select" defaultValue="capture" onChange={this.updateOrg}>
-              <option disabled value="capture"> -- Select associated organizations -- </option>
+              <option disabled value="capture"> -- Select associated organization -- </option>
               {this.props.orgs.map((org, i) =>
                 <option key={i} value={org.id}>{org.name}</option>
               )}
