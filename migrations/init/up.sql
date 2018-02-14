@@ -5,12 +5,12 @@ begin transaction;
 
 create table org (
     id integer PRIMARY KEY,
-    name text UNIQUE NOT NULL
+    name text UNIQUE NOT NULL COLLATE NOCASE
 );
 
 create table user (
     id integer PRIMARY KEY,
-    email text UNIQUE NOT NULL
+    email text UNIQUE NOT NULL COLLATE NOCASE
 );
 
 create table user_org (
@@ -23,10 +23,14 @@ create table user_org (
 
 create table linode (
     id integer PRIMARY KEY,
-    name text UNIQUE NOT NULL,
+    name text UNIQUE NOT NULL COLLATE NOCASE,
     org integer,
     FOREIGN KEY (org) REFERENCES org(id) ON DELETE CASCADE
 );
+
+create index org_name_index on org (name COLLATE NOCASE);
+create index user_email_index on user (email COLLATE NOCASE);
+create index linode_name_index on linode (name COLLATE NOCASE);
 
 commit;
 
