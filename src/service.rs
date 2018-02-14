@@ -157,6 +157,9 @@ fn route_request(request: &rouille::Request, state: State) -> Result<rouille::Re
             let post = request.parse_json_body::<Post>()
                 .map_err(|_| ErrorKind::BadRequest("Invalid post data".to_string()))?;
             let conn = state.db.get()?;
+            if models::Org::exists(&conn, &post.name)? {
+                bail_fmt!(ErrorKind::BadRequest, "Org already exists, {}", post.name);
+            }
             let org_id = models::NewOrg { name: post.name }.insert(&conn)?;
             json!({"org_id": org_id}).to_json_resp()?
         },
@@ -170,6 +173,9 @@ fn route_request(request: &rouille::Request, state: State) -> Result<rouille::Re
                 .map_err(|_| ErrorKind::BadRequest("Invalid post data".to_string()))?;
             let mut conn = state.db.get()?;
             let trans = conn.transaction()?;
+            if models::User::exists(&trans, &post.email)? {
+                bail_fmt!(ErrorKind::BadRequest, "User already exists, {}", post.email);
+            }
             let user_id = models::NewUser { email: post.email }.insert(&trans)?;
             for id in &post.org_ids {
                 models::NewUserOrg { org: *id, user: user_id }.insert(&trans)?;
@@ -186,6 +192,9 @@ fn route_request(request: &rouille::Request, state: State) -> Result<rouille::Re
             let post = request.parse_json_body::<Post>()
                 .map_err(|_| ErrorKind::BadRequest("Invalid post data".to_string()))?;
             let conn = state.db.get()?;
+            if models::Linode::exists(&conn, &post.name)? {
+                bail_fmt!(ErrorKind::BadRequest, "Linode already exists, {}", post.name);
+            }
             let linode_id = models::NewLinode { name: post.name, org: post.org_id }.insert(&conn)?;
             json!({"linode_id": linode_id}).to_json_resp()?
         },
