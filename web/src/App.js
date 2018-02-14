@@ -118,7 +118,7 @@ class App extends Component {
             :
           this.state.orgs.map(org => {
             return (
-              <div key={org.id} style={{marginBottom: '20px'}}>
+              <div key={org.id} style={{margin: '10px'}}>
                 <OrgDetails org={org} selectUser={this.selectUser}/>
               </div>
             );

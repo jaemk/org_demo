@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Well } from 'react-bootstrap';
 import axios from 'axios';
 import styles from '../styles';
 
@@ -39,53 +40,59 @@ class UserDetails extends Component {
               <b>Email:</b> {this.state.user.email}
             </div>
 
-            <div style={styles.table}>
-              <div style={styles.row}>
-                <div style={styles.titleCell}>
-                  <span style={styles.titleSpan}>
-                    Organizations:
-                  </span>
-                </div>
-              </div>
-              {this.state.user.orgs.length === 0?
+            <Well bsSize="large">
+              <div style={styles.table}>
                 <div style={styles.row}>
-                  <div style={styles.itemCell}>
-                    No associated organizations
+                  <div style={styles.titleCell}>
+                    <span style={styles.titleSpan}>
+                      Organizations:
+                    </span>
                   </div>
                 </div>
-                  :
-                this.state.user.orgs.map((org, i) =>
-                  <div key={i} style={styles.row}>
+                {this.state.user.orgs.length === 0?
+                  <div style={styles.row}>
                     <div style={styles.itemCell}>
-                      {org.name}
+                      No associated organizations
                     </div>
                   </div>
-                )
-              }
+                    :
+                  this.state.user.orgs.map((org, i) =>
+                    <div key={i} style={styles.row}>
+                      <div style={styles.itemCell}>
+                        {org.name}
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+            </Well>
 
-              <div style={styles.row}>
-                <div style={styles.titleCell}>
-                  <span style={styles.titleSpan}>
-                    Linodes:
-                  </span>
-                </div>
-              </div>
-              {this.state.user.linodes.length === 0?
+            <Well bsSize="large">
+              <div style={styles.table}>
                 <div style={styles.row}>
-                  <div style={styles.itemCell}>
-                    No associated linodes
+                  <div style={styles.titleCell}>
+                    <span style={styles.titleSpan}>
+                      Linodes:
+                    </span>
                   </div>
                 </div>
-                  :
-                this.state.user.linodes.map((linode, i) =>
-                  <div key={i} style={styles.row}>
+                {this.state.user.linodes.length === 0?
+                  <div style={styles.row}>
                     <div style={styles.itemCell}>
-                      {linode.name} ({getOrgNameById(linode.org)})
+                      No associated linodes
                     </div>
                   </div>
-                )
-              }
-            </div>
+                    :
+                  this.state.user.linodes.map((linode, i) =>
+                    <div key={i} style={styles.row}>
+                      <div style={styles.itemCell}>
+                        {linode.name} ({getOrgNameById(linode.org)})
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+            </Well>
           </div>
         }
       </div>
