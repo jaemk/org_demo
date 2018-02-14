@@ -17,18 +17,19 @@ main() {
 
     test -f Cargo.lock || cargo generate-lockfile
 
-    cd web
-    yarn install
-    cd $src
+    # Build artifacts
     ./build.py web
 
     cross rustc --bin org_demo --target $TARGET --release -- -C lto
-
-    # TODO Update this to package the right artifacts
     cp target/$TARGET/release/org_demo bin/
-    cp -r * $stage/
+
+    mkdir -p $stage/org_demo
+    cp -r * $stage/org_demo
 
     cd $stage
+    rm -rf org_demo/target/
+    rm -rf org_demo/web/node_modules
+    rm -rf org_demo/web/build
     tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
     cd $src
 
