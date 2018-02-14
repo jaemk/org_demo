@@ -88,6 +88,11 @@ class Web(object):
         # cmd('rm', '-f', pjoin(cls.static_dir, 'media', '*'))
         cmd('rm', '-f', pjoin(cls.static_dir, 'manifest.json'))
 
+        print("** Updating dependencies **")
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        cmd('yarn', 'install', cwd=cls.web_proj_dir)
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+
         print("** Building react release **")
         print("\n** START BUILD OUTPUT **")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
