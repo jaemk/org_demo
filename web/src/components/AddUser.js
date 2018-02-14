@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import axios from 'axios';
+import debounce from 'lodash/debounce';
 
 
 class AddOrg extends Component {
@@ -23,11 +24,13 @@ class AddOrg extends Component {
     this.updateEmail = this.updateEmail.bind(this);
     this.updateOrg = this.updateOrg.bind(this);
     this.submit = this.submit.bind(this);
-    this.checkValidity = this.checkValidity.bind(this);
+    this._checkValidity = this._checkValidity.bind(this);
+    this.checkValidity = debounce(this._checkValidity, 250);
   }
 
-  checkValidity(email) {
-    axios.get(`/api/exists/user/${email}`).then(resp => {
+  _checkValidity() {
+    if (!this.state.email) { return; }
+    axios.get(`/api/exists/user/${this.state.email}`).then(resp => {
       this.setState({valid: resp.data.exists? 'no' : 'yes'});
     }).catch(err => this.props.setError(err, 'Failed checking user validity'));
   }

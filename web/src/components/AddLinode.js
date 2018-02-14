@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import axios from 'axios';
+import debounce from 'lodash/debounce';
 
 
 class AddLinode extends Component {
@@ -23,11 +24,13 @@ class AddLinode extends Component {
     this.updateName = this.updateName.bind(this);
     this.updateOrg = this.updateOrg.bind(this);
     this.submit = this.submit.bind(this);
-    this.checkValidity = this.checkValidity.bind(this);
+    this._checkValidity = this._checkValidity.bind(this);
+    this.checkValidity = debounce(this._checkValidity, 250);
   }
 
-  checkValidity(name) {
-    axios.get(`/api/exists/linode/${name}`).then(resp => {
+  _checkValidity() {
+    if (!this.state.name) { return; }
+    axios.get(`/api/exists/linode/${this.state.name}`).then(resp => {
       this.setState({valid: resp.data.exists? 'no' : 'yes'});
     }).catch(err => this.props.setError(err, 'Failed checking linode validity'));
   }
@@ -59,7 +62,7 @@ class AddLinode extends Component {
 
   updateName(e) {
     this.setState({name: e.target.value, valid: 'unknown'});
-    this.checkValidity(e.target.value);
+    this.checkValidity();
   }
 
   submit(e) {
